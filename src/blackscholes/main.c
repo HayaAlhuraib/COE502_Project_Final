@@ -9,8 +9,6 @@
 
 /* Include implementation headers */
 #include "impl/scalar.h"
-#include "impl/vec.h"
-#include "impl/para.h"
 #include "impl/mimd.h" 
 #include "impl/simd.h" 
 

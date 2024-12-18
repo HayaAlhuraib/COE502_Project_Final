@@ -1,26 +1,10 @@
 # Directory
-ROOT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+ROOT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
-# Compilation Configuration
-CC := gcc
-IFLAGS := -lpthread -lm
-
-# Detect Architecture and Set Flags Accordingly
-ARCH := $(shell uname -m)
-
-ifeq ($(ARCH), x86_64)
-    CFLAGS := -mavx -mavx2 -g -O3
-    $(info Compiling for x86_64 with AVX2 support)
-else ifeq ($(ARCH), aarch64)
-    CFLAGS := -march=armv8-a -g -O3
-    $(info Compiling for ARM64 with NEON support)
-else ifeq ($(ARCH), armv7l)
-    CFLAGS := -mfpu=neon -g -O3
-    $(info Compiling for ARMv7 with NEON support)
-else
-    CFLAGS := -g -O3
-    $(info Compiling for generic architecture)
-endif
+# Compilation Configuratoin
+CC:=gcc
+IFLAGS:=-lpthread -lm
+CFLAGS := -march=native -g -O3
 
 # File and directory names
 BUILD_DIR := $(ROOT_DIR)/build
@@ -34,7 +18,7 @@ BINS_BM  := $(addprefix $(BUILD_DIR)/,$(BENCHMARKS))
 CLEAN_BM := $(addprefix clean_,$(BENCHMARKS))
 
 # Default
-all: $(BINS_BM) $(BUILD_DIR)/simd
+all: $(BINS_BM)
 
 # Build directory
 $(BUILD_DIR):
@@ -49,9 +33,5 @@ include template.mk
 
 # All benchmarks/applications
 -include $(SRC_DIR)/Makefile.mk
-
-# Rule to compile simd.c with AVX2 support
-$(BUILD_DIR)/simd: $(SRC_DIR)/simd.c | $(BUILD_DIR)
-	$(CC) $(CFLAGS) -o $@ $< $(IFLAGS)
 
 .PHONY: clean all

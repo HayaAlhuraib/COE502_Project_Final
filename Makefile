@@ -1,5 +1,5 @@
 # Directory
-ROOT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+ROOT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
 # Compilation Configuration
 CC := gcc
@@ -34,7 +34,7 @@ BINS_BM  := $(addprefix $(BUILD_DIR)/,$(BENCHMARKS))
 CLEAN_BM := $(addprefix clean_,$(BENCHMARKS))
 
 # Default
-all: $(BINS_BM)
+all: $(BINS_BM) $(BUILD_DIR)/simd
 
 # Build directory
 $(BUILD_DIR):
@@ -49,5 +49,9 @@ include template.mk
 
 # All benchmarks/applications
 -include $(SRC_DIR)/Makefile.mk
+
+# Rule to compile simd.c with AVX2 support
+$(BUILD_DIR)/simd: $(SRC_DIR)/simd.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -o $@ $< $(IFLAGS)
 
 .PHONY: clean all

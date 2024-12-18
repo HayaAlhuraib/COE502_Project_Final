@@ -163,7 +163,7 @@ int main(int argc, char** argv) {
     export_matrix_to_csv("matrix_A.csv", A, rows_A, cols_A);
     export_matrix_to_csv("matrix_B.csv", B, rows_B, cols_B);
 
-    double naive_time = 0.0, opt_time = 0.0, vec_time = 0.0, para_time = 0.0; simd_time = 0.0;mimd_time = 0.0;// Declare timing variables
+    double naive_time = 0.0, opt_time = 0.0, vec_time = 0.0, para_time = 0.0, simd_time = 0.0, mimd_time = 0.0;// Declare timing variables
     /* Run naive implementation */
     if (run_both || impl == impl_scalar_naive) {
         args_t args_naive = { .input = malloc((rows_A * cols_A + rows_B * cols_B) * sizeof(float)), .output = R_naive, .size = rows_A };

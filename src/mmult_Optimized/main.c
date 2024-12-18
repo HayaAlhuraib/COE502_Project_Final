@@ -237,10 +237,19 @@ int main(int argc, char** argv) {
 
   
 
-    /* Calculate and print speedup */
-    if (run_both && naive_time > 0 && opt_time && simd_time && mimd_time > 0) {
-        printf("Speedup: %.2fx\n", naive_time / opt_time);
+      /* Calculate and print speedup */
+    if (naive_time > 0) {
+        if (opt_time > 0) {
+            printf("Speedup (Optimized vs Naive): %.2fx\n", naive_time / opt_time);
+        }
+        if (simd_time > 0) {
+            printf("Speedup (SIMD vs Naive): %.2fx\n", naive_time / simd_time);
+        }
+        if (mimd_time > 0) {
+            printf("Speedup (MIMD vs Naive): %.2fx\n", naive_time / mimd_time);
+        }
     }
+
 
     /* Free memory */
     free(A);

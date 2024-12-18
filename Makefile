@@ -1,10 +1,26 @@
 # Directory
 ROOT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
-# Compilation Configuratoin
-CC:=gcc
-IFLAGS:=-lpthread -lm
-CFLAGS:=-mavx -mavx2 -g -O3
+# Compilation Configuration
+CC := gcc
+IFLAGS := -lpthread -lm
+
+# Detect Architecture and Set Flags Accordingly
+ARCH := $(shell uname -m)
+
+ifeq ($(ARCH), x86_64)
+    CFLAGS := -mavx -mavx2 -g -O3
+    $(info Compiling for x86_64 with AVX2 support)
+else ifeq ($(ARCH), aarch64)
+    CFLAGS := -march=armv8-a -g -O3
+    $(info Compiling for ARM64 with NEON support)
+else ifeq ($(ARCH), armv7l)
+    CFLAGS := -mfpu=neon -g -O3
+    $(info Compiling for ARMv7 with NEON support)
+else
+    CFLAGS := -g -O3
+    $(info Compiling for generic architecture)
+endif
 
 # File and directory names
 BUILD_DIR := $(ROOT_DIR)/build

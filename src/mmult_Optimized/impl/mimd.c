@@ -42,7 +42,7 @@ void* impl_mimd(void* args) {
     float* A = (float*)arguments->input;
     float* B = (float*)(arguments->input + size * size * sizeof(float));
     float* R = (float*)arguments->output;
-    int nthreads = arguments->nthreads;
+    int nthreads = 4;
 
     pthread_t threads[nthreads];
     thread_data_t thread_data[nthreads];
